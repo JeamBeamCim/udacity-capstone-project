@@ -133,20 +133,6 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          name: Install AWS CLI dependencies
-          working_directory: /tmp
-          command: |
-            apt-get update && sudo apt-get install -yy less
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
-      - run:
-          name: Install kubectl
-          command: |
-            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            mv ./kubectl /usr/local/bin/kubectl
-      - run:
           name: Install dependencies
           command: |
             apk add --update ansible
@@ -158,6 +144,20 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=false
             export ANSIBLE_IGNORE_UNREACHABLE=true
             ansible-playbook -i ~/inventory.txt configure-server.yml
+      - run:
+          name: Install AWS CLI dependencies
+          working_directory: /tmp
+          command: |
+            sudo apt-get update && sudo apt-get install -yy less
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Install kubectl
+          command: |
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
 
   configure-cluster:
     docker:
