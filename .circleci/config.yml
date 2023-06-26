@@ -124,32 +124,31 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: circleci/node:16.12.0
+      - image: circleci/python:3.7
     steps:
       - checkout
       - add_ssh_keys:
           fingerprints:
             - "74:a0:38:c0:87:89:fd:86:53:a5:63:11:50:87:2f:76:9a:7a:c9:67"
-      - attach_workspace:
-          at: ~/
       - run:
-          name: Install dependencies
+          name: Install awscli and gettext-base
           command: |
-            apk add --update ansible
+            sudo pip3 install awscli
+            sudo apt-get install gettext-base
       - run:
-          name: Install AWS CLI dependencies
-          working_directory: /tmp
+          name: Install aws-iam-authenticator
           command: |
-            sudo apt-get update && sudo apt-get install -yy less
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+            curl -o aws-iam-authenticator curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
+            chmod +x ./aws-iam-authenticator
+            sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
       - run:
           name: Install kubectl
           command: |
             curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
+      - attach_workspace:
+          at: ~/
       - run:
           name: Configure server
           command: |
