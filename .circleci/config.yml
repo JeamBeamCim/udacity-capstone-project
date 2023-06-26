@@ -141,6 +141,8 @@ jobs:
           command: |
             cat ~/inventory.txt
             cd ansible
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            export ANSIBLE_IGNORE_UNREACHABLE=true
             ansible-playbook -i ~/inventory.txt configure-server.yml
 
   configure-cluster:
@@ -162,6 +164,8 @@ jobs:
           command: |
             cat ~/inventory.txt
             cd ansible
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            export ANSIBLE_IGNORE_UNREACHABLE=true
             ansible-playbook -i ~/inventory.txt configure-cluster.yml
       - run:
           name: Wait for LoadBalancer
@@ -174,6 +178,8 @@ jobs:
           command: |
             cat ~/inventory.txt
             cd ansible
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            export ANSIBLE_IGNORE_UNREACHABLE=true
             ansible-playbook -i ~/inventory.txt save-elb-dns.yml
             cat ~/elb_dns.txt
       - persist_to_workspace:
@@ -200,6 +206,8 @@ jobs:
           command: |
             cat ~/inventory.txt
             cd ansible
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            export ANSIBLE_IGNORE_UNREACHABLE=true
             ansible-playbook -i ~/inventory.txt deploy-app.yml
           no_output_timeout: 2m
 
