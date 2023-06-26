@@ -1,7 +1,7 @@
-[![CircleCI](https://circleci.com/gh/JeamBeamCim/capstone-project.svg?style=svg)](https://circleci.com/gh/JeamBeamCim/capstone-project)
+[![CircleCI](https://circleci.com/gh/JeamBeamCim/udacity-capstone-project.svg?style=svg)](https://circleci.com/gh/JeamBeamCim/udacity-capstone-project)
 ## Cloud DevOps Engineer Capstone Project
 
-[Github Repo](https://github.com/JeamBeamCim/capstone-project)
+[Github Repo](https://github.com/JeamBeamCim/udacity-capstone-project)
 
 ### Configure environment variables on CircleCI
 
