@@ -124,7 +124,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:16.12.0
     steps:
       - checkout
       - add_ssh_keys:
@@ -136,14 +136,6 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-      - run:
-          name: Configure server
-          command: |
-            cat ~/inventory.txt
-            cd ansible
-            export ANSIBLE_HOST_KEY_CHECKING=false
-            export ANSIBLE_IGNORE_UNREACHABLE=true
-            ansible-playbook -i ~/inventory.txt configure-server.yml
       - run:
           name: Install AWS CLI dependencies
           working_directory: /tmp
@@ -158,6 +150,14 @@ jobs:
             curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
+      - run:
+          name: Configure server
+          command: |
+            cat ~/inventory.txt
+            cd ansible
+            export ANSIBLE_HOST_KEY_CHECKING=false
+            export ANSIBLE_IGNORE_UNREACHABLE=true
+            ansible-playbook -i ~/inventory.txt configure-server.yml
 
   configure-cluster:
     docker:
