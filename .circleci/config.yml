@@ -130,37 +130,18 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "74:a0:38:c0:87:89:fd:86:53:a5:63:11:50:87:2f:76:9a:7a:c9:67"
-      - run:
-          name: Install awscli and gettext-base
-          command: |
-            sudo pip3 install awscli
-            sudo apt-get install gettext-base
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator
-            chmod +x ./aws-iam-authenticator
-            sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
-      - run:
-          name: Install kubectl
-          command: |
-            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-#      - attach_workspace:
-#          at: ~/
-#      - run:
-#          name: Install dependencies
-#          command: |
-#            pip install --upgrade --user ansible
-#      - run:
-#          name: Configure server
-#          command: |
-#            cat ~/inventory.txt
-#            cd ansible
-#            export ANSIBLE_HOST_KEY_CHECKING=false
-#            export ANSIBLE_IGNORE_UNREACHABLE=true
-#            ansible-playbook -i ~/inventory.txt configure-server.yml
+      - attach_workspace:
+          at: ~/
+            - run:
+                name: Install dependencies
+                command: |
+                  apk add --update ansible
+            - run:
+                name: Configure server
+                command: |
+                  cat ~/inventory.txt
+                  cd ansible
+                  ansible-playbook -i ~/inventory.txt configure-server.yml
 
   configure-cluster:
     docker:
